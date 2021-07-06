@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Valoriza | Compartilhe o que o mundo tem de melhor.</title>
+
+	<link rel="stylesheet" type="text/css" href="css/allPages/main.css">
+	<link rel="stylesheet" type="text/css" href="css/initialPage/spotlight.css">
+	<link rel="stylesheet" type="text/css" href="css/initialPage/forms.css"> 
+	<link rel="stylesheet" type="text/css" href="css/initialPage/mainHeader.css">
+	<link rel="stylesheet" type="text/css" href="css/initialPage/whoWeAre.css">
+	<link rel="stylesheet" type="text/css" href="css/initialPage/popups.css">
+</head>
+<body>
+	<header class="main-header">
+		<div class="logo">Valoriza</div>
+		<nav class="nav">
+			<ul class="nav-ul">
+				<li class="nav-li anchor-animated"><a href="#forms" id="a-access-login">Entrar</a></li>
+				<li class="nav-li anchor-animated"><a href="#forms" id="a-access-sign-up">Cadastrar-se</a></li>
+				<li class="nav-li"><a>Quem somos</a></li>
+				<li class="nav-li"><a>Guia</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<main class="main">
+		<section class="spotlight container active">
+			<div>
+				<div class="titles">
+					<h1>O lugar onde o mundo mostra sua empatia</h1>
+					<h2>Junte-se a pessoas de todos os lugares e compartilhe o que o mundo tem de melhor.</h2>
+				</div>
+			</div>
+		</section>
+		
+		<section class="forms-section" id="forms">
+			<h2>Participe da nossa comunidade</h2>
+			<div class="forms container">
+				<div class="people-icon"></div>
+
+				<div id="sign-up-form" class="form active">
+					<h4>Cadastre-se</h4>
+					<label for="sign-up-name">Username</label>
+					<input type="text" id="sign-up-name" placeholder="Digite seu nome de usuário">
+
+					<label for="sign-up-email">Email</label>
+					<input type="email" id="sign-up-email" placeholder="Digite seu email">
+
+					<label for="sign-up-password">Senha</label>
+					<input type="password" id="sign-up-password" placeholder="Digite sua senha">
+
+					<div class="form-button-div">
+						<button id="sign-up-button" class="form-button button">Cadastrar</button>	
+					</div>
+
+					<div class="next-form-button-div">
+						Já tem uma conta? <button class="access-acount-button" id="access-login">Acesse-a</button>
+					</div>
+				</div>
+
+				<div id="login-form" class="form disabled">
+					<h4>Entrar</h4>
+
+					<label for="login-email">Email</label>
+					<input type="email" id="login-email" placeholder="Digite seu email">
+
+					<label for="login-password">Senha</label>
+					<input type="password" id="login-password" placeholder="Digite sua senha">
+
+					<div class="form-button-div">
+						<button id="login-button" class="form-button button">Entrar</button>	
+					</div>
+
+					<div class="next-form-button-div">
+						Não tem uma conta? <button class="access-acount-button" id="access-sign-up">Cadastre-se</button>
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</main>
+
+	<section id="who-we-are" class="container">
+	</section>
+
+	<section class="popups">
+		<div class="popup active">
+			<div class="popup-message">
+				<div class="tools"></div>
+				<div class="text">
+					Algumas funcionalidades ainda estão em desenvolvimento...
+				</div>
+				<div class="help">
+					Colabore através do <a target="_blank" href="github.com/alessandroCidney/api-compliments">GitHub</a>!
+				</div>
+				<div class="close-popup"></div>
+			</div>
+		</div>
+	</section>
+
+	<footer>
+		Criado graças à NLW6
+	</footer>
+
+	<script src="https://kit.fontawesome.com/89e6692889.js" crossorigin="anonymous"></script>
+	<script src="js/htmlItems/items.js"></script>
+	<script src="js/util/validateEmail.js"></script>
+	<script src="js/operations/data.js"></script>
+	<script src="js/operations/operations.js"></script>
+	<script src="js/animations/scrollToOnClick.js"></script>
+
+	<script>
+		const accessLogin = document.querySelector('#access-login')
+		const accessSignUp = document.querySelector('#access-sign-up')
+
+		const anchorAccessLogin = document.querySelector('#a-access-login')
+		const anchorAcessSignUp = document.querySelector('#a-access-sign-up')
+
+		accessLogin.addEventListener('click', () => {
+			if(loginForm.classList.contains('disabled')) {
+				loginForm.classList.remove('disabled')
+				loginForm.classList.add('active')
+			}
+
+			if(signUpForm.classList.contains('active')) {
+				signUpForm.classList.remove('active')
+				signUpForm.classList.add('disabled')
+			}
+		})
+
+		anchorAccessLogin.addEventListener('click', () => {
+			if(loginForm.classList.contains('disabled')) {
+				loginForm.classList.remove('disabled')
+				loginForm.classList.add('active')
+			}
+
+			if(signUpForm.classList.contains('active')) {
+				signUpForm.classList.remove('active')
+				signUpForm.classList.add('disabled')
+			}
+		})
+
+		accessSignUp.addEventListener('click', () => {
+			if(loginForm.classList.contains('active')) {
+				loginForm.classList.remove('active')
+				loginForm.classList.add('disabled')
+			}
+
+			if(signUpForm.classList.contains('disabled')) {
+				signUpForm.classList.remove('disabled')
+				signUpForm.classList.add('active')
+			}
+		})
+
+		anchorAcessSignUp.addEventListener('click', () => {
+			if(loginForm.classList.contains('active')) {
+				loginForm.classList.remove('active')
+				loginForm.classList.add('disabled')
+			}
+
+			if(signUpForm.classList.contains('disabled')) {
+				signUpForm.classList.remove('disabled')
+				signUpForm.classList.add('active')
+			}
+		})
+
+		const popup = document.querySelector('.popup')
+		popup.addEventListener('click', (event) => {
+			if(event.path[0].classList.contains('popup')) {
+				popup.classList.add('disabled')
+				popup.classList.remove('active')
+			}
+		})
+
+		const closePopup = document.querySelector('.popup .close-popup')
+
+		closePopup.addEventListener('click', () => {
+			popup.classList.add('disabled')
+			popup.classList.remove('active')
+		})
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+.active {
+	animation: activeAnimation .5s ease;
+}
+
+.dashboard {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+.controls {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0,0,0);
+	color: white;
+	height: 100%;
+	width: 20%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	flex-direction: column;
+	border-right: 1px solid rgba(255, 255, 255, .1);
+	transition: .5s;
+	overflow: hidden;
+	z-index: 2;
+
+	/*Evitar cópia de texto*/
+
+	-moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+	user-select: none;
+}
+
+.controls .username {
+	font-size: 3rem;
+	font-weight: bolder;
+}
+
+.controls .current-page {
+	text-align: center;
+	font-size: 1.2rem;
+	width: 90%;
+	min-width: 245px;
+}
+
+.controls .controls-options {
+	height: 60%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.controls .controls-options .controls-option {
+	width: 90%;
+	min-width: 245px;
+	border-radius: 30px;
+	padding: 20px;
+	cursor: pointer;
+	text-align: center;
+	transition: .3s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	font-size: 1rem;
+}	
+
+.controls .controls-options .controls-option span {
+	width: 80%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.controls .controls-options .controls-option i {
+	width: 20%;
+}
+
+.controls .controls-options .controls-option:hover {
+	background-color: white;
+	color: black;
+	font-weight: bolder;
+}
+
+.view {
+	position: absolute;
+	background: linear-gradient(rgba(0,0,0,.8), rgba(0,0,0,.8) 100%), url(../../assets/images/universe.jpg) no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	width: 80%;
+	min-height: 100vh;
+	top: 0;
+	right: 0;
+	color: white;
+	transition: .5s;
+}
+
+.view .list {
+	transition: .7s;
+	position: relative;
+}
+
+#list-users {
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	flex-direction: column;
+}
+
+.view .list h2 {
+	padding: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	top: 0;
+	z-index: 1;
+	background-color: none;
+	height: 10vh;
+}
+
+#list-users ul.cadastred-users {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	padding-top: 10vh;
+}
+
+#list-users ul.cadastred-users li.cadastred-user {
+	border-bottom: 1px solid rgba(255, 255, 255, .1);
+	padding: 30px;
+	width: 100%;
+	text-align: center;
+	background-color: rgba(0,0,0,.2);
+	cursor: pointer;
+	transition: .3s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 20px;
+	height: 120px;
+	transition: all .2s ease;
+}
+
+#list-users ul.cadastred-users li.cadastred-user:hover {
+	background-color: rgba(255, 255, 255, .1);
+	height: 150px;
+}
+
+#list-users ul.cadastred-users li.cadastred-user .user-data {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+}
+
+#list-users ul.cadastred-users li.cadastred-user .user-actions.active {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: showUp .5s ease;
+}
+
+#list-users ul.cadastred-users li.cadastred-user .user-actions.active .send-compliment {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+}
+
+#list-users ul.cadastred-users li.cadastred-user .user-actions.active .send-compliment .input-send-compliment {
+	width: 50%;
+	display: flex;
+	padding: 10px;
+	text-align: center;
+	border-radius: 5px;
+	border: none;
+}
+
+#list-users ul.cadastred-users li.cadastred-user .user-actions.active .send-compliment .select-send-compliment {
+	padding: 10px;
+	width: 30%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+#list-users ul.cadastred-users li.cadastred-user .user-actions.active button {
+	display: flex;
+	padding: 10px;
+	border: none;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	width: 10%;
+}
+
+#list-tags {
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	flex-direction: column;
+}
+
+#list-tags ul.cadastred-tags {
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+	height: 100%;
+	padding-top: 10vh;
+	gap: 20px;
+}
+
+#list-tags ul.cadastred-tags li.cadastred-tag {
+	background-color: rgba(255,255,255,.1);
+	color: white;
+	width: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 300px;
+	text-align: center;
+	cursor: pointer;
+	transition: .2s;
+	font-size: 1.2rem;
+}
+
+#list-tags ul.cadastred-tags li.cadastred-tag:hover {
+	width: 310px;
+	height: 310px;
+	font-size: 1.5rem;
+	background-color: white;
+	color: black;
+	font-weight: bolder;
+}
+
+.compliments-list .compliments-ul {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	padding-top: 10vh;
+}
+
+.compliments-list .compliments-ul .compliment {
+	border-bottom: 1px solid rgba(255, 255, 255, .1);
+	padding: 30px;
+	width: 100%;
+	text-align: center;
+	background-color: rgba(0,0,0,.2);
+	cursor: pointer;
+	transition: .3s;
+	position: relative;
+}
+
+.compliments-list .compliments-ul .compliment:hover {
+	background-color: rgba(255, 255, 255, .1);
+	font-weight: bolder;	
+}
+
+.compliments-list .compliments-ul .compliment .username {
+	font-size: 1.5rem;
+	width: 20%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.compliments-list .compliments-ul .compliment .date {
+	font-size: 1rem;
+	width: 20%;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.compliments-list .compliments-ul .compliment .tag {
+	font-size: 1rem;
+	width: 20%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.compliments-list .compliments-ul .compliment .message {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.controls.controls-disabled {
+	width: 7%;
+}
+
+.controls.controls-disabled + .view {
+	width: 93%;
+}
+
+.controls.controls-disabled .username {
+	display: none;
+}
+
+.controls.controls-disabled .current-page {
+	display: none;
+}
+
+.controls.controls-disabled .controls-options .controls-option {
+	min-width: none;
+}
+
+.controls.controls-disabled .controls-options .controls-option span {
+	display: none;
+}
+
+.controls.controls-disabled .controls-options .controls-option i {
+	width: 100%;
+}
+
+
+@keyframes activeAnimation {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes showUp {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

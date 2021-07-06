@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Valoriza | Dashboard</title>
+
+	<link rel="stylesheet" type="text/css" href="css/allPages/main.css">
+	<link rel="stylesheet" type="text/css" href="css/userInterface/dashboard.css">
+	<!-- Esses scripts devem ser carregados antes de tudo -->
+	<script src="js/operations/data.js"></script>
+	<script src="js/login/checkLogin.js"></script>
+</head>
+<body>
+
+	<main class="dashboard">
+
+		<section class="controls">
+			<div class="current-page">
+				Página inicial
+			</div>
+
+			<div class="username">
+	
+			</div>
+			
+			<ul class="controls-options">
+				<li class="controls-option" id="option-home"><i class="fas fa-home"></i><span>Página inicial</span></li>
+				<li class="controls-option" id="option-users"><i class="fas fa-users"></i><span>Usuários</span></li>
+				<li class="controls-option" id="option-tags"><i class="fas fa-tags"></i><span>Tags</span></li>
+				<li class="controls-option" id="option-receive"><i class="fas fa-envelope"></i><span>Elogios recebidos</span></li>
+				<li class="controls-option" id="option-send"><i class="fas fa-paper-plane"></i><span>Elogios enviados</span></li>
+			</ul>
+		</section>
+
+		<section class="view">
+			<div id="list-home" class="list disabled">
+				<h2>Página inicial</h2>
+
+			</div>
+
+			<div id="list-users" class="list active">
+				<h2>Usuários disponíveis</h2>
+				<ul class="cadastred-users">
+
+				</ul>
+			</div>
+
+			<div id="list-tags" class="list disabled">
+				<h2>Tags cadastradas</h2>
+				<ul class="cadastred-tags">
+					<li class="cadastred-tag">Amizade</li>
+				</ul>
+			</div>
+
+			<div id="list-receive" class="list disabled compliments-list">
+				<h2>Elogios recebidos</h2>
+				<ul class="cadastred-receive-compliments compliments-ul">
+					<li class="cadastred-receive-compliment compliment">
+						<div class="username">Username</div>
+						<div class="message">Message</div>
+						<div class="tag">Tag</div>
+						<div class="date">Date</div>
+					</li>
+					<li class="cadastred-receive-compliment compliment">
+						<div class="username">Username</div>
+						<div class="message">Message</div>
+						<div class="tag">Tag</div>
+						<div class="date">Date</div>
+					</li>
+				</ul>
+			</div>
+
+			<div id="list-send" class="list disabled compliments-list">
+				<h2>Elogios enviados</h2>
+				<ul class="cadastred-send-compliments compliments-ul">
+					<li class="cadastred-send-compliment compliment">
+						<div class="username">Username</div>
+						<div class="message">Message</div>
+						<div class="tag">Tag</div>
+						<div class="date">Date</div>
+					</li>
+					<li class="cadastred-send-compliment compliment">
+						<div class="username">Username</div>
+						<div class="message">Message</div>
+						<div class="tag">Tag</div>
+						<div class="date">Date</div>
+					</li>
+				</ul>
+			</div>
+		</section>
+	</main>
+
+	<script src="https://kit.fontawesome.com/89e6692889.js" crossorigin="anonymous"></script>
+	<script src="js/util/formatDate.js"></script>
+	<script src="js/util/findUserAndTagById.js"></script>
+	<script src="js/util/capitalize.js"></script>
+	<script>
+
+		// Captando elementos da página
+		const username = document.querySelector('.dashboard .controls .username')
+		const listUsersDiv = document.querySelector('.view #list-users .cadastred-users')
+		listUsersDiv.innerHTML = ""
+
+		const listTagsDiv = document.querySelector('.view #list-tags .cadastred-tags')
+		listTagsDiv.innerHTML = ""
+
+		const ulReceiveCompliments = document.querySelector('.view #list-receive .cadastred-receive-compliments')
+		ulReceiveCompliments.innerHTML = ""
+
+		const ulSendCompliments = document.querySelector('.view #list-send .cadastred-send-compliments')
+		ulSendCompliments.innerHTML = ""
+
+		const controlsSection = document.querySelector('.dashboard .controls')
+		const view = document.querySelector('.view')
+
+		controlsSection.addEventListener('dblclick', () => {
+			if(controlsSection.classList.contains("controls-disabled")) {
+				controlsSection.classList.remove("controls-disabled")
+			}
+		})
+
+		view.addEventListener('click', () => {
+			if(!controlsSection.classList.contains("controls-disabled")) {
+				controlsSection.classList.add("controls-disabled")
+			}
+		})
+
+		async function createCompliment(data) {
+			let results = await fetch(`${baseAPIURL}/compliment`, {
+				method: 'POST',
+				headers: {
+					"Authorization": `Bearer ${theTOKEN}`,
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(data => data)
+			.catch(err => err)
+
+			if(results.error) {
+				alert("Não foi possível enviar o elogio :(")
+				return false
+			}
+
+			alert("Elogio enviado com sucesso!")
+
+			refreshDashboard()
+		}
+
+		async function sendCompliment(event) {
+			let liId = event.path[3].id
+
+			let input = document.querySelector(`#${liId} input`)
+			let select = document.querySelector(`#${liId} select`)
+
+			if(!input.value) {
+				alert("Preencha todos os campos antes de enviar um elogio!")
+				return false
+			}
+
+			let message = input.value
+
+			let tagId = select.options[select.selectedIndex].value.split("-").splice(1, select.options[select.selectedIndex].value.split("-").length).join("-")
+
+			let userReceiver = liId.split("-").splice(1, liId.split("-").length).join("-")
+
+			let data = { tag_id: tagId, user_receiver: userReceiver, message: message }
+
+			await createCompliment(data)
+		}
+
+		function showUserActions(event) {
+			let arr = event.path
+
+			arr.splice(arr.length-4, arr.length)
+			
+			let id
+
+			arr.forEach((e, i) => {
+				if(e.classList.contains("cadastred-user")) {
+					id = e.id
+				}
+			})
+
+			let userActions = document.querySelector(`#${id} .user-actions`)
+			
+			if(userActions.classList.contains("disabled")) {
+				userActions.classList.remove("disabled")
+			}
+				
+			if(!userActions.classList.contains("active")) {
+				userActions.classList.add("active")	
+			}
+
+			let listItems = document.querySelectorAll('.cadastred-user')
+
+			listItems.forEach(e => {
+				if(e.id !== id) {
+					let listItemOptions = document.querySelector(`#${e.id} .user-actions`) 
+
+					if(!listItemOptions.classList.contains("disabled")) {
+						listItemOptions.classList.add("disabled")
+					}
+					if(listItemOptions.classList.contains("active")) {
+						listItemOptions.classList.remove("active")
+					}
+				}
+			})
+
+		}
+
+		async function listSendCompliments() {
+			let sendComp = await fetch(`${baseAPIURL}/users/compliments/send`, {
+				method: 'GET',
+				headers: {
+					"Authorization": `Bearer ${theTOKEN}`,
+					"Content-Type": "application/json"
+				}
+			})
+			.then(response => response.json())
+			.then(data => data)
+			.catch(err => err)
+
+			if(sendComp.error) {
+				console.log("Não foi possível carregar os elogios enviados")
+				return false
+			}
+
+			let usersReceivers = []
+			let results = []
+
+			sendComp.forEach(e => usersReceivers.push([e.user_receiver, e.message, e.tag_id, e.created_at.split("T")[0].split("-").reverse().join("/")]))
+
+			await Promise.all(usersReceivers.map(async (e, i) => {
+				let userReceiver = await findUserById(e[0])
+				let complimentTag = await findTagById(e[2])
+				results.push([userReceiver.name, e[1], complimentTag.name, e[3]])
+			}))
+
+			results = results.reverse()
+
+			results.forEach(e => {
+				ulSendCompliments.innerHTML += `<li class='cadastred-send-compliment compliment'><div class='username'>${e[0]}</div><div class='message'>${e[1]}</div><div class='tag'>${capitalize(e[2])}</div><div class='date'>${e[3]}</div></li>`
+			})
+
+			return results
+		}
+
+		async function listReceiveCompliments() {
+
+			let receiveComp = await fetch(`${baseAPIURL}/users/compliments/receive`, {
+				method: 'GET',
+				headers: {
+					"Authorization": `Bearer ${theTOKEN}`,
+					"Content-Type": "application/json"
+				}
+			})
+			.then(response => response.json())
+			.then(data => data)
+			.catch(err => err)
+
+			if(receiveComp.error) {
+				console.log("Não foi possível carregar os elogios recebidos")
+				return false
+			}
+
+			let usersSenders = []
+			let results = []
+
+			receiveComp.forEach(e => usersSenders.push([e.user_sender, e.message, e.tag_id, e.created_at.split("T")[0].split("-").reverse().join("/")]))
+
+			await Promise.all(usersSenders.map(async (e, index) => {
+				let userSender = await findUserById(e[0])
+				let complimentTag = await findTagById(e[2])
+				results.push([userSender.name, e[1], complimentTag.name, e[3]])
+			}))
+
+			// Retorna um array em que cada item contém o nome de usuário que enviou o elogio, a mensagem enviada, a tag e a data
+
+			// [username, message, tag, created_at]
+			// console.log("Receive Compliments", results, results.reverse())
+
+			results = results.reverse()
+
+			results.forEach(e => {
+				ulReceiveCompliments.innerHTML += `<li class='cadastred-receive-compliment compliment'><div class='username'>${e[0]}</div><div class='message'>${e[1]}</div><div class='tag'>${capitalize(e[2])}</div><div class='date'>${e[3]}</div></li>`
+			})
+
+			return results
+		}
+
+		// Função responsável por listar as tags em uma região específica
+		async function listTags() {
+			let tags = await fetch(`${baseAPIURL}/tags`, {
+				method: 'GET',
+				headers: {
+					"Authorization": `Bearer ${theTOKEN}`,
+					"Content-Type": "application/json"
+				}
+			})
+			.then(response => response.json())
+			.then(data => data)
+			.catch(err => err)
+
+			// Este código mostra as tags e deixa seus nomes no formato "capitalize"
+			tags.forEach(e => {
+				listTagsDiv.innerHTML += `<li class='cadastred-tag'>${e.name.split("").map((e, i) => i===0?e.toUpperCase():e).join("")}</li>`
+			})
+
+			return tags
+		}
+
+		// Função responsável por listar os usuários e acionar a listagem de tags
+		async function listUsers() {
+
+			// Fetch buscando os usuários
+			let users = await fetch(`${baseAPIURL}/users`, {
+				method: 'GET',
+				headers: {
+					"Authorization": `Bearer ${theTOKEN}`,
+					"Content-Type": "application/json"
+				}
+			})
+			.then(response => response.json())
+			.then(data => data)
+			.catch(err => err)
+
+			let tags = await listTags()
+			let tagOptions = []
+
+			tags.forEach(e => tagOptions.push(`<option value='${e.name.toLowerCase()}-${e.id}'>${capitalize(e.name)}</option>`))
+
+			// Se o usuário tiver o mesmo email que o armazenado na sessionStorage, o h1 recebe seu name
+			users.forEach(e => {
+				if(e.email === userEmail) {
+					username.innerText = e.name
+				}
+
+				// Usuários serão enviados para o campo de listagem de usuários
+				if(e.email != userEmail) {
+					listUsersDiv.innerHTML += `<li class='cadastred-user' id='user-${e.id}'><div class='user-data'><div class='name'>${e.name}</div><div class='user-items'>Ingressou em ${formatDate(e.created_at.split("T")[0].split("-").reverse().join("/"))}</div></div><div class='user-actions disabled'><div class='send-compliment'><input type='text' placeholder='Enviar um elogio para ${e.name}' class='input-send-compliment' /><select class='select-send-compliment'>${tagOptions}</select><button class='button-send-compliment button'>Enviar elogio</button></div></div></li>`
+				}
+			})
+
+
+			const allUserDivs = document.querySelectorAll('.cadastred-user')
+
+			allUserDivs.forEach(e => e.addEventListener('click', showUserActions))
+
+			const allButtonSendCompliments = document.querySelectorAll('.button-send-compliment')
+
+			allButtonSendCompliments.forEach(e => e.addEventListener('click', sendCompliment))
+		}
+
+		function activeFetchs() {
+			listUsers()
+			listTags()
+			listReceiveCompliments()
+			listSendCompliments()
+		}
+
+		// Esta função reaciona as listagens de users e tags, além de limpar o h1 e as divs de listagem
+		function refreshDashboard() {
+			listUsersDiv.innerHTML = ""
+			//listTagsDiv.innerHTML = ""	
+			username.innerHTML = ""
+			ulReceiveCompliments.innerHTML = ""
+			ulSendCompliments.innerHTML = ""
+
+			setTimeout(activeFetchs, 10)			
+		}
+
+		refreshDashboard()
+
+		// Função para o menu de controles
+
+		const controlsOptions = document.querySelectorAll('.dashboard .controls .controls-options .controls-option')
+
+		var controlsIds = []
+
+		var listNames = []
+
+		controlsOptions.forEach(e => {
+			controlsIds.push(e.id)
+			listNames.push(e.id.split("-")[1])
+
+			e.addEventListener('click', () => {
+				// Pegar todos os IDs e esconder listas com IDs diferentes de E
+
+				controlsIds.forEach(x => {
+					if(x === e.id) {
+						let htmlList = document.querySelector(`#list-${x.split("-")[1]}`)
+						if(!htmlList.classList.contains('active')) {
+							htmlList.classList.add('active')
+						} 
+						if(htmlList.classList.contains('disabled')) {
+							htmlList.classList.remove('disabled')
+						}
+					} else {
+						let htmlList = document.querySelector(`#list-${x.split("-")[1]}`)
+						if(!htmlList.classList.contains('disabled')) {
+							htmlList.classList.add('disabled')
+						}
+						if(htmlList.classList.contains('active')) {
+							htmlList.classList.remove('active')
+						}
+					}
+				})				
+			})
+		})
+
+	</script>
+</body>
+</html>

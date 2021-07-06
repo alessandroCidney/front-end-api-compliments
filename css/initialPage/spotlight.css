@@ -1,0 +1,22 @@
+.spotlight {
+	background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5) 100%), url('../../assets/images/universe-people.jpg') no-repeat;
+	background-position: bottom;
+	color: #fff;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.spotlight .titles {
+	width: 70%;
+	padding: 10px 40px;
+}
+
+.spotlight h1 {
+	font-size: 4rem;
+}
+
+.spotlight h2 {
+	font-weight: normal;
+	width: 80%;
+	color: rgba(255, 255, 255, .8);
+}

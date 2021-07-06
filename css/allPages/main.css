@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	list-style: none;
+	text-decoration: none;
+}
+
+body {
+	font-family: Poppins, 'Trebuchet MS', sans-serif;
+}
+
+a:hover {
+	font-weight: bolder;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+	height: 90vh;
+}
+
+.disabled {
+	display: none;
+}
+
+.active {
+	display: flex;
+}
+
+.button {
+	background-color: #fff;
+	color: #010221;
+	cursor: pointer;
+	border: none;
+	border-radius: 7px;
+	transition: .3s;
+	font-weight: bolder;
+}
+
+.button:hover {
+	background-color: #010221;
+	color: white;
+}
