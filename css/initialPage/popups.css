@@ -22,7 +22,6 @@ div.popup-message {
 	flex-direction: column;
 	gap: 20px;
 	padding: 20px;
-	box-shadow: 0 0 0 7px #010221;
 	animation: showPopup .5s ease;
 	text-align: center;
 }
