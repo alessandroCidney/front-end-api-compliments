@@ -354,6 +354,12 @@
 	width: 100%;
 }
 
+div.popup .tools {
+	background: url('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/clock-256.png') no-repeat;
+	background-size: contain;
+	background-position: center;
+	height: 80px;
+}
 
 @keyframes activeAnimation {
 	from {

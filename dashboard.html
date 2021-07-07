@@ -5,7 +5,9 @@
 	<title>Valoriza | Dashboard</title>
 
 	<link rel="stylesheet" type="text/css" href="css/allPages/main.css">
+	<link rel="stylesheet" type="text/css" href="css/initialPage/popups.css">
 	<link rel="stylesheet" type="text/css" href="css/userInterface/dashboard.css">
+
 	<!-- Esses scripts devem ser carregados antes de tudo -->
 	<script src="js/operations/data.js"></script>
 	<script src="js/login/checkLogin.js"></script>
@@ -90,11 +92,43 @@
 		</section>
 	</main>
 
+	<section class="popups">
+		<div class="popup active">
+			<div class="popup-message">
+				<div class="tools"></div>
+				<div class="text">
+					Elogios autodestrutivos!
+				</div>
+				<div class="help">
+					Todos os elogios enviados são resetados a cada 24 horas.
+				</div>
+				<div class="close-popup"></div>
+			</div>
+		</div>
+	</section>
+
 	<script src="https://kit.fontawesome.com/89e6692889.js" crossorigin="anonymous"></script>
 	<script src="js/util/formatDate.js"></script>
 	<script src="js/util/findUserAndTagById.js"></script>
 	<script src="js/util/capitalize.js"></script>
 	<script>
+
+		// Script para o popup
+
+		const popup = document.querySelector('.popup')
+		popup.addEventListener('click', (event) => {
+			if(event.path[0].classList.contains('popup')) {
+				popup.classList.add('disabled')
+				popup.classList.remove('active')
+			}
+		})
+
+		const closePopup = document.querySelector('.popup .close-popup')
+
+		closePopup.addEventListener('click', () => {
+			popup.classList.add('disabled')
+			popup.classList.remove('active')
+		})
 
 		// Captando elementos da página
 		const username = document.querySelector('.dashboard .controls .username')
