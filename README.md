@@ -1,4 +1,4 @@
-# Front-end do projeto Valoriza
+# Front-end do projeto Valoriza :two_men_holding_hands:
 
 ## O que é?
 Este é o front-end do projeto Valoriza, desenvolvido durante a NLW Together.
